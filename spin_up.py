@@ -1,5 +1,4 @@
 import pyrax
-import pprint
 
 print "What is your username?"
 username = raw_input()
@@ -7,8 +6,6 @@ print "API Key:"
 apikey = raw_input()
 print "What datacenter/region do you want to use?"
 datacenter = raw_input()
-
-pp = pprint.PrettyPrinter(indent=4)
 
 pyrax.set_setting("identity_type", "rackspace")
 pyrax.set_default_region(datacenter)
