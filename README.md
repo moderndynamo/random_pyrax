@@ -1,8 +1,9 @@
 # spinupdown.py
 
 This is a very simple tool that allows you to do one of two things:
-    1. Spin up a server from an image
-    2. Image a server (and delete it once complete)
+
+1. Spin up a server from an image
+2. Image a server (and delete it once complete)
 
 ## Installation
 
