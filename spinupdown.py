@@ -11,21 +11,23 @@ username = settings.get('credentials', 'RAX_USERNAME')
 apikey = settings.get('credentials', 'RAX_API_KEY')
 datacenter = settings.get('credentials', 'RAX_REGION')
 
-# define spin up function
-
 pyrax.set_setting("identity_type", "rackspace")
 pyrax.set_default_region(datacenter)
 pyrax.set_credentials(username, apikey)
 
+cs = pyrax.cloudservers
+
+# define spinup() function
+
 def spinup():
-	imgs = pyrax.cloudservers.images.list()
+	imgs = cs.images.list()
 	for img in imgs:
 	    print img.name, " -- ID:", img.id
 
 	print "\nWhat is the ID of the image you want to spin up from?\n"
 	image_name = raw_input("ID: ")
 
-	flvs = pyrax.cloudservers.list_flavors()
+	flvs = cs.list_flavors()
 	for flv in flvs:
 	    print "Name:", flv.name
 	    print "  ID:", flv.id
@@ -39,7 +41,7 @@ def spinup():
 	print "\nWhat should we call this server?\n"
 	new_server_name = raw_input("Server name: ")
 
-	server = pyrax.cloudservers.servers.create(new_server_name, image_name, flave)
+	server = cs.servers.create(new_server_name, image_name, flave)
 
 	pyrax.utils.wait_for_build(server, verbose="True")
 
@@ -48,7 +50,7 @@ def spinup():
 	print "\nAdmin password:", server.adminPass
 	print "\nNetworks:", server.networks, "\n"
 
-# define yes or no function
+# Define yes or no function. Credit: https://github.com/garrettdreyfus/
 
 def yes_or_no(question):
     reply = str(raw_input(question+' (y/n): ')).lower().strip()
@@ -59,10 +61,10 @@ def yes_or_no(question):
     else:
         return yes_or_no("Please enter ")
 
-# define spin down function
+# Define spindown() function
 
 def spindown():
-	servers =  pyrax.cloudservers.servers.list()
+	servers =  cs.servers.list()
 
 	print "\nWhat is the ID server do you want to spin down?\n"
 
@@ -70,19 +72,19 @@ def spindown():
 	    print server.name, " -- ID:", server.id
 
 	srvr = raw_input("Server ID: ")
-	srvrname = pyrax.cloudservers.servers.get(srvr).name
+	srvrname = cs.servers.get(srvr).name
 
 	ts = time.time()
 	st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d-%H%M%S')
 
-	imgexec = pyrax.cloudservers.servers.create_image(srvr, srvrname + "-" + st)
-	image = pyrax.cloudservers.images.get(imgexec)
+	imgexec = cs.servers.create_image(srvr, srvrname + "-" + st)
+	image = cs.images.get(imgexec)
 	pyrax.utils.wait_until(image, "status", ["ACTIVE","ERROR"], interval=10, attempts=0, verbose=True, verbose_atts="progress")
 
 	qn = yes_or_no("\nDo you want to delete the server as well? ")
 
 	if qn == True:
-	    pyrax.cloudservers.servers.delete(srvr)
+	    cs.servers.delete(srvr)
 	    print "\nServer deletion requested. All done!\n"
 	else:
 	    print "\nAll done! Thanks for playing.\n"
