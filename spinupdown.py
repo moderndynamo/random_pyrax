@@ -1,5 +1,3 @@
-import os
-import sys
 import ConfigParser
 import pyrax
 import time
