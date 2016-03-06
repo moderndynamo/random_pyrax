@@ -38,6 +38,7 @@ st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d-%H%M%S')
 
 imgexec = pyrax.cloudservers.servers.create_image(srvr, srvrname + "-" + st)
 image = pyrax.cloudservers.images.get(imgexec)
+
 pyrax.utils.wait_until(image, "status", ["ACTIVE","ERROR"], interval=10, attempts=0, verbose=True, verbose_atts="progress")
 
 qn = yes_or_no("Do you want to delete the server as well?")
