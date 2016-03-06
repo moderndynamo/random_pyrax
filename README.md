@@ -7,7 +7,7 @@ This is a very simple tool that allows you to do one of two things:
 ## Installation
 
 Installation is pretty easy:
-    $ vim .spinconfig
+    vim .spinconfig
 
 Add your credentials to the config cile
     RAX_USERNAME=your_username
@@ -15,8 +15,8 @@ Add your credentials to the config cile
     RAX_REGION=your_preferred_datacenter
 
 Also, make sure you have pyrax installed
-    $ easy_install pip
-    $ pip install pyrax
+    easy_install pip
+    pip install pyrax
 
 ## Usage
 
